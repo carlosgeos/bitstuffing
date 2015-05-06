@@ -1,4 +1,7 @@
 CPU 386
+extern afficherRegistres
+extern afficherFlags
+
 
 GLOBAL bitstuffing
 
@@ -12,17 +15,23 @@ SECTION .text
 
 bitstuffing:
 
-	PUSH EBP
-	MOV EBP, ESP
-	MOV EAX, [EBP+8]	; place le message (parametre) dans le registre EAX
-
-
-	; votre code ici
+	PUSH EBP		;save base pointer
+	MOV EBP, ESP		;set new base pointer with stack pointer
+	MOV EAX, [EBP+8]	;parameter can be found in EBP + 8!
 
 
 
 
+show_registers_flags:
+	pusha
+	call	afficherRegistres
+	popa
 
+	pusha
+	pushf
+	call	afficherFlags
+	popf
+	popa
 
 end:	; a la fin, votre résultat doit se trouver dans EAX
 
